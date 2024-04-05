@@ -154,7 +154,11 @@ if (CMAKE_SYSTEM_NAME STREQUAL "WindowsStore")
 		${ResourceFiles}
 		${AssetFiles}
 		${DepFiles}
+		uwp/system_uwp.cpp
 		${SDL2_INCLUDE_DIR}/../src/main/winrt/SDL_winrt_main_NonXAML.cpp)
+	set_source_files_properties (uwp/system_uwp.cpp
+		PROPERTIES COMPILE_OPTIONS "-permissive;-ZW")
+	set_source_files_properties( uwp/system_uwp.cpp PROPERTIES SKIP_PRECOMPILE_HEADERS TRUE )
 	set_source_files_properties (${SDL2_INCLUDE_DIR}/../src/main/winrt/SDL_winrt_main_NonXAML.cpp 
 		PROPERTIES COMPILE_OPTIONS "-permissive;-ZW")
 	set_source_files_properties( ${SDL2_INCLUDE_DIR}/../src/main/winrt/SDL_winrt_main_NonXAML.cpp PROPERTIES SKIP_PRECOMPILE_HEADERS TRUE )

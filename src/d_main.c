@@ -1321,7 +1321,7 @@ void D_SRB2Main(void)
 		else
 		{
 			// use user specific config file
-#ifdef DEFAULTDIR
+#if defined (DEFAULTDIR) && !defined(_WINDOWS_UWP)  
 			snprintf(srb2home, sizeof srb2home, "%s" PATHSEP DEFAULTDIR, userhome);
 			snprintf(downloaddir, sizeof downloaddir, "%s" PATHSEP "DOWNLOAD", srb2home);
 			if (dedicated)
@@ -1335,6 +1335,7 @@ void D_SRB2Main(void)
 
 			snprintf(luafiledir, sizeof luafiledir, "%s" PATHSEP "luafiles", srb2home);
 #else // DEFAULTDIR
+			//On uwp we want to load everything from a folder
 			snprintf(srb2home, sizeof srb2home, "%s", userhome);
 			snprintf(downloaddir, sizeof downloaddir, "%s", userhome);
 			if (dedicated)
@@ -1769,8 +1770,14 @@ void D_SRB2Main(void)
 	}
 }
 
+const char* uwp_GetAppDataPath();
+
 const char *D_Home(void)
 {
+#ifdef _WINDOWS_UWP
+	return uwp_GetAppDataPath();
+#endif
+
 	const char *userhome = NULL;
 
 #ifdef ANDROID

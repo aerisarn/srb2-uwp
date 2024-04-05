@@ -3124,6 +3124,8 @@ do { \
 		return WadPath; \
 } while (0)
 
+const char* uwp_GetAppDataPath();
+
 /**	\brief go through all possible paths and look for srb2.pk3
 
   \return path to srb2.pk3 if any
@@ -3162,6 +3164,12 @@ static const char *locateWad(void)
 	I_OutputMsg(",HOME");
 	if ((envstr = I_GetEnv("HOME")) != NULL)
 		SEARCHWAD(envstr);
+#endif
+
+#ifdef _WINDOWS_UWP
+	const char* appdata = uwp_GetAppDataPath();
+	if (NULL != appdata)
+		SEARCHWAD(appdata);
 #endif
 
 	// search paths
