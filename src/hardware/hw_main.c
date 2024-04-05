@@ -10,6 +10,10 @@
 /// \file hw_main.c
 /// \brief hardware renderer, using the standard HardWareRender driver DLL for SRB2
 
+#ifdef _WIN32
+#pragma warning(disable:4146)
+#endif
+
 #include <math.h>
 
 #include "../doomstat.h"

@@ -10,6 +10,10 @@
 /// \file  lua_mathlib.c
 /// \brief basic math library for Lua scripting
 
+#ifdef _WIN32
+#pragma warning(disable:4146)
+#endif
+
 #include "doomdef.h"
 //#include "fastcmp.h"
 #include "tables.h"

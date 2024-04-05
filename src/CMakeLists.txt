@@ -106,6 +106,73 @@ add_executable(SRB2SDL2 MACOSX_BUNDLE WIN32
 	lua_inputlib.c
 )
 
+#Thanks flyinghead
+if (CMAKE_SYSTEM_NAME STREQUAL "WindowsStore")
+	message("Adding UWP resources")
+	message("SDL2_LIBRARY:" ${SDL2_LIBRARY})
+
+	#file(READ common/platform/uwp/Package.appxmanifest MANIFEST)
+	#string(REPLACE "9.9.9.9" ${MS_VERSION} MANIFEST ${MANIFEST})
+	#file(WRITE ${CMAKE_BINARY_DIR}/Package.appxmanifest ${MANIFEST})
+	set(ResourceFiles 
+		uwp/Package.appxmanifest
+		uwp/SRB2_TemporaryKey.pfx
+		${SDL2_INCLUDE_DIR}/../src/main/winrt/SDL2-WinRTResource_BlankCursor.cur
+		${SDL2_INCLUDE_DIR}/../src/main/winrt/SDL2-WinRTResources.rc
+	)
+
+	set(AssetFiles
+		uwp/assets/LockScreenLogo.scale-200.png
+		uwp/assets/SplashScreen.scale-200.png
+		uwp/assets/Square44x44Logo.scale-200.png
+		uwp/assets/Square44x44Logo.targetsize-24_altform-unplated.png
+		uwp/assets/Square150x150Logo.scale-200.png
+		uwp/assets/StoreLogo.png
+		uwp/assets/Wide310x150Logo.scale-200.png
+	)
+
+	set(DepFiles
+		${CMAKE_BINARY_DIR}/gamedata.dat
+		${CMAKE_BINARY_DIR}/patch.pk3
+		${CMAKE_BINARY_DIR}/models.dat
+		${CMAKE_BINARY_DIR}/patch_music.pk3
+		${CMAKE_BINARY_DIR}/player.dta
+		${CMAKE_BINARY_DIR}/zones.pk3
+		${CMAKE_BINARY_DIR}/music.dta
+		${CMAKE_BINARY_DIR}/srb2.pk3
+		C:/Program\ Files\ \(x86\)/Windows\ Kits/10/Redist/D3D/x64/dxil.dll
+		${CMAKE_BINARY_DIR}/mesa-uwp/opengl32.dll
+		${CMAKE_BINARY_DIR}/mesa-uwp/libglapi.dll
+		${CMAKE_BINARY_DIR}/mesa-uwp/libgallium_wgl.dll
+		${CMAKE_BINARY_DIR}/mesa-uwp/z-1.dll
+		${CMAKE_BINARY_DIR}/SDL-uwp-gl/VisualC-WinRT/x64/Release/SDL-UWP/SDL2.dll
+	)
+
+	target_sources(SRB2SDL2 PRIVATE
+		${ResourceFiles}
+		${AssetFiles}
+		${DepFiles}
+		${SDL2_INCLUDE_DIR}/../src/main/winrt/SDL_winrt_main_NonXAML.cpp)
+	set_source_files_properties (${SDL2_INCLUDE_DIR}/../src/main/winrt/SDL_winrt_main_NonXAML.cpp 
+		PROPERTIES COMPILE_OPTIONS "-permissive;-ZW")
+	set_source_files_properties( ${SDL2_INCLUDE_DIR}/../src/main/winrt/SDL_winrt_main_NonXAML.cpp PROPERTIES SKIP_PRECOMPILE_HEADERS TRUE )
+	
+	set_property(SOURCE ${AssetFiles} PROPERTY VS_DEPLOYMENT_CONTENT 1)
+	set_property(SOURCE ${AssetFiles} PROPERTY VS_DEPLOYMENT_LOCATION "Assets")
+
+	set_property(SOURCE ${DepFiles} PROPERTY VS_DEPLOYMENT_CONTENT 1)
+	set_property(SOURCE ${DepFiles} PROPERTY VS_DEPLOYMENT_LOCATION ".")
+	
+	set_target_properties(SRB2SDL2 PROPERTIES RESOURCE 
+		"${ResourceFiles} ${DepFiles} ${AssetFiles}")
+	
+	target_link_options(SRB2SDL2 PRIVATE 
+		/nodefaultlib:vccorlib$<$<CONFIG:Debug>:d>
+		/nodefaultlib:msvcrt$<$<CONFIG:Debug>:d>
+		vccorlib$<$<CONFIG:Debug>:d>.lib 
+		msvcrt$<$<CONFIG:Debug>:d>.lib)
+endif()
+
 # This updates the modification time for comptime.c at the
 # end of building so when the build system is ran next time,
 # that file gets flagged. comptime.c will always be rebuilt.
@@ -365,6 +432,13 @@ if(SRB2_CONFIG_ERRORMODE)
 	)
 endif()
 
+# Yes we know we use insecure CRT functions...
+if("${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC")
+    target_compile_definitions(SRB2SDL2 PRIVATE -D_CRT_NONSTDC_NO_DEPRECATE)
+    target_compile_definitions(SRB2SDL2 PRIVATE -D_CRT_SECURE_NO_WARNINGS)
+	target_compile_definitions(SRB2SDL2 PRIVATE -D_WINSOCK_DEPRECATED_NO_WARNINGS)
+endif()
+
 # Link warnings configuration
 target_link_options(SRB2SDL2 PRIVATE
 	$<$<C_COMPILER_ID:GNU>:
@@ -442,6 +516,9 @@ endif()
 if(TARGET libopenmpt::libopenmpt)
 	target_compile_definitions(SRB2SDL2 PRIVATE -DHAVE_OPENMPT)
 	target_link_libraries(SRB2SDL2 PRIVATE libopenmpt::libopenmpt)
+	#this is required by openmpt
+	find_package(mpg123 CONFIG REQUIRED)
+	target_link_libraries(SRB2SDL2 PRIVATE MPG123::libmpg123)
 	message(STATUS "libopenmpt Found")
 else()
 	message(STATUS "No libopenmpt Found")
@@ -463,6 +540,10 @@ else()
 	message(STATUS "No miniupnpc Found")
 endif()
 
+if (CMAKE_SYSTEM_NAME STREQUAL "WindowsStore")
+	target_compile_definitions(SRB2SDL2 PRIVATE -D_WINDOWS_UWP)	
+endif()
+
 # strip debug symbols into separate file when using gcc.
 # to be consistent with Makefile, don't generate for OS X.
 if((CMAKE_COMPILER_IS_GNUCC) AND NOT ("${CMAKE_SYSTEM_NAME}" MATCHES Darwin))
@@ -480,7 +561,7 @@ if((CMAKE_COMPILER_IS_GNUCC) AND NOT ("${CMAKE_SYSTEM_NAME}" MATCHES Darwin))
 endif()
 
 # copy DLLs to bin/ directory if building internal shared on windows
-if("${CMAKE_SYSTEM_NAME}" STREQUAL Windows AND NOT "${SRB2_CONFIG_INTERNAL_LIBRARIES}" AND "${SRB2_CONFIG_SHARED_INTERNAL_LIBRARIES}")
+if("${CMAKE_SYSTEM_NAME}" STREQUAL Windows OR "${CMAKE_SYSTEM_NAME}" STREQUAL WindowsStore AND NOT "${SRB2_CONFIG_INTERNAL_LIBRARIES}" AND "${SRB2_CONFIG_SHARED_INTERNAL_LIBRARIES}")
 	set(ADDITIONAL_DLLS "")
 	if("${CMAKE_C_COMPILER_ID}" STREQUAL GNU)
 		# also copy implicitly linked system libraries

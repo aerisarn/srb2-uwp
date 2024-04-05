@@ -16,6 +16,10 @@
 #include <unistd.h>
 #endif
 
+#ifdef _WIN32
+#pragma warning(disable:4146)
+#endif
+
 #include "m_menu.h"
 
 #include "doomdef.h"

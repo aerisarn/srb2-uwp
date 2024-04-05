@@ -13,6 +13,10 @@
 /// \file  m_random.c
 /// \brief RNG for client effects and PRNG for game actions
 
+#ifdef _WIN32
+#pragma warning(disable:4146)
+#endif
+
 #include "doomdef.h"
 #include "doomtype.h"
 #include "i_system.h" // I_GetRandomBytes

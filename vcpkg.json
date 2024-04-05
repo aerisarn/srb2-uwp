@@ -14,10 +14,17 @@
       "platform": "!(windows & mingw)"
     },
     "libpng",
-    "miniupnpc",
-    "sdl2",
+    {
+        "name": "miniupnpc",
+        "platform": "!uwp"
+    },
+    {
+        "name": "sdl2",
+        "platform": "!(windows & mingw) & !uwp"
+    },
     {
       "name": "sdl2-mixer-ext",
+	  "platform": "!uwp",
       "features": [
         {
           "name": "cmd",
@@ -33,7 +40,7 @@
         },
         {
           "name": "libmodplug",
-          "platform": "!(windows & mingw)"
+          "platform": "!(windows & mingw) & !uwp"
         },
         {
           "name": "libopnmidi",
@@ -57,7 +64,7 @@
         },
         {
           "name": "opusfile",
-          "platform": "!(windows & mingw)"
+          "platform": "!(windows & mingw) & !uwp"
         },
         {
           "name": "pxtone",
@@ -72,6 +79,14 @@
           "platform": "!(windows & mingw)"
         }
       ]
+    },
+	{
+		"name": "sdl2-mixer",
+	    "platform": "uwp"
+    },
+    {
+      "name": "mpg123",
+      "platform": "uwp"
     },
     "zlib"
   ],
