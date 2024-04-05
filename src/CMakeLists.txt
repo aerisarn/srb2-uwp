@@ -108,6 +108,73 @@ add_executable(SRB2SDL2 MACOSX_BUNDLE WIN32
 	lua_inputlib.c
 )
 
+#Thanks flyinghead
+if (CMAKE_SYSTEM_NAME STREQUAL "WindowsStore")
+	message("Adding UWP resources")
+	message("SDL2_LIBRARY:" ${SDL2_LIBRARY})
+
+	#file(READ common/platform/uwp/Package.appxmanifest MANIFEST)
+	#string(REPLACE "9.9.9.9" ${MS_VERSION} MANIFEST ${MANIFEST})
+	#file(WRITE ${CMAKE_BINARY_DIR}/Package.appxmanifest ${MANIFEST})
+	set(ResourceFiles 
+		uwp/Package.appxmanifest
+		uwp/SRB2_TemporaryKey.pfx
+		${SDL2_INCLUDE_DIR}/../src/main/winrt/SDL2-WinRTResource_BlankCursor.cur
+		${SDL2_INCLUDE_DIR}/../src/main/winrt/SDL2-WinRTResources.rc
+	)
+
+	set(AssetFiles
+		uwp/assets/LockScreenLogo.scale-200.png
+		uwp/assets/SplashScreen.scale-200.png
+		uwp/assets/Square44x44Logo.scale-200.png
+		uwp/assets/Square44x44Logo.targetsize-24_altform-unplated.png
+		uwp/assets/Square150x150Logo.scale-200.png
+		uwp/assets/StoreLogo.png
+		uwp/assets/Wide310x150Logo.scale-200.png
+	)
+
+	set(DepFiles
+		${CMAKE_BINARY_DIR}/gamedata.dat
+		${CMAKE_BINARY_DIR}/patch.pk3
+		${CMAKE_BINARY_DIR}/models.dat
+		${CMAKE_BINARY_DIR}/patch_music.pk3
+		${CMAKE_BINARY_DIR}/player.dta
+		${CMAKE_BINARY_DIR}/zones.pk3
+		${CMAKE_BINARY_DIR}/music.dta
+		${CMAKE_BINARY_DIR}/srb2.pk3
+		C:/Program\ Files\ \(x86\)/Windows\ Kits/10/Redist/D3D/x64/dxil.dll
+		${CMAKE_BINARY_DIR}/mesa-uwp/opengl32.dll
+		${CMAKE_BINARY_DIR}/mesa-uwp/libglapi.dll
+		${CMAKE_BINARY_DIR}/mesa-uwp/libgallium_wgl.dll
+		${CMAKE_BINARY_DIR}/mesa-uwp/z-1.dll
+		${CMAKE_BINARY_DIR}/SDL-uwp-gl/VisualC-WinRT/x64/Release/SDL-UWP/SDL2.dll
+	)
+
+	target_sources(SRB2SDL2 PRIVATE
+		${ResourceFiles}
+		${AssetFiles}
+		${DepFiles}
+		${SDL2_INCLUDE_DIR}/../src/main/winrt/SDL_winrt_main_NonXAML.cpp)
+	set_source_files_properties (${SDL2_INCLUDE_DIR}/../src/main/winrt/SDL_winrt_main_NonXAML.cpp 
+		PROPERTIES COMPILE_OPTIONS "-permissive;-ZW")
+	set_source_files_properties( ${SDL2_INCLUDE_DIR}/../src/main/winrt/SDL_winrt_main_NonXAML.cpp PROPERTIES SKIP_PRECOMPILE_HEADERS TRUE )
+	
+	set_property(SOURCE ${AssetFiles} PROPERTY VS_DEPLOYMENT_CONTENT 1)
+	set_property(SOURCE ${AssetFiles} PROPERTY VS_DEPLOYMENT_LOCATION "Assets")
+
+	set_property(SOURCE ${DepFiles} PROPERTY VS_DEPLOYMENT_CONTENT 1)
+	set_property(SOURCE ${DepFiles} PROPERTY VS_DEPLOYMENT_LOCATION ".")
+	
+	set_target_properties(SRB2SDL2 PROPERTIES RESOURCE 
+		"${ResourceFiles} ${DepFiles} ${AssetFiles}")
+	
+	target_link_options(SRB2SDL2 PRIVATE 
+		/nodefaultlib:vccorlib$<$<CONFIG:Debug>:d>
+		/nodefaultlib:msvcrt$<$<CONFIG:Debug>:d>
+		vccorlib$<$<CONFIG:Debug>:d>.lib 
+		msvcrt$<$<CONFIG:Debug>:d>.lib)
+endif()
+
 # This updates the modification time for comptime.c at the
 # end of building so when the build system is ran next time,
 # that file gets flagged. comptime.c will always be rebuilt.
@@ -136,9 +203,12 @@ add_dependencies(SRB2SDL2 _SRB2_reconf)
 
 if("${CMAKE_COMPILER_IS_GNUCC}" AND "${CMAKE_SYSTEM_NAME}" MATCHES "Windows")
 	target_link_options(SRB2SDL2 PRIVATE "-Wl,--disable-dynamicbase")
-	if(NOT "${SRB2_CONFIG_SYSTEM_LIBRARIES}" AND NOT "${SRB2_CONFIG_SHARED_INTERNAL_LIBRARIES}")
+	if(NOT "${SRB2_CONFIG_STATIC_STDLIB}")
 		# On MinGW with internal libraries, link the standard library statically
 		target_link_options(SRB2SDL2 PRIVATE "-static")
+	endif()
+	if(CMAKE_SIZEOF_VOID_P EQUAL 4)
+		target_link_options(SRB2SDL2 PRIVATE "-Wl,--large-address-aware")
 	endif()
 endif()
 
@@ -153,6 +223,10 @@ add_subdirectory(blua)
 # OS macros
 if (UNIX)
 	target_compile_definitions(SRB2SDL2 PRIVATE -DUNIXCOMMON)
+endif()
+
+if (BSD MATCHES "FreeBSD")
+	target_compile_definitions(SRB2SDL2 PRIVATE -DFREEBSD)
 endif()
 
 if(CMAKE_COMPILER_IS_GNUCC)
@@ -170,19 +244,16 @@ if("${CMAKE_SYSTEM_NAME}" MATCHES "Darwin")
 	target_compile_definitions(SRB2SDL2 PRIVATE -DMACOSX)
 endif()
 
-target_link_libraries(SRB2SDL2 PRIVATE gme)
-target_compile_definitions(SRB2SDL2 PRIVATE -DHAVE_GME)
-if(NOT "${SRB2_CONFIG_SYSTEM_LIBRARIES}")
-	# this sucks but gme doesn't use modern cmake to delineate public headers
-	target_include_directories(SRB2SDL2 PRIVATE "${libgme_SOURCE_DIR}")
+if("${SRB2_CONFIG_USE_GME}")
+	target_link_libraries(SRB2SDL2 PRIVATE gme)
+	target_compile_definitions(SRB2SDL2 PRIVATE -DHAVE_GME)
+	if(NOT "${SRB2_CONFIG_SYSTEM_LIBRARIES}")
+		# this sucks but gme doesn't use modern cmake to delineate public headers
+		target_include_directories(SRB2SDL2 PRIVATE "${libgme_SOURCE_DIR}")
+	endif()
 endif()
 
-target_link_libraries(SRB2SDL2 PRIVATE openmpt)
-target_compile_definitions(SRB2SDL2 PRIVATE -DHAVE_OPENMPT)
-
-target_link_libraries(SRB2SDL2 PRIVATE ZLIB::ZLIB PNG::PNG CURL::libcurl)
-target_compile_definitions(SRB2SDL2 PRIVATE -DHAVE_ZLIB -DHAVE_PNG -DHAVE_CURL -D_LARGEFILE64_SOURCE)
-target_sources(SRB2SDL2 PRIVATE apng.c)
+target_compile_definitions(SRB2SDL2 PRIVATE -D_LARGEFILE64_SOURCE)
 
 set(SRB2_HAVE_THREADS ON)
 target_compile_definitions(SRB2SDL2 PRIVATE -DHAVE_THREADS)
@@ -240,6 +311,7 @@ target_compile_options(SRB2SDL2 PRIVATE
 	# This is a direct translation from versions.mk
 	$<$<AND:$<COMPILE_LANGUAGE:C>,$<C_COMPILER_ID:GNU>>:
 		-Wall
+		-Wextra
 		-Wno-trigraphs
 		-W # Was controlled by RELAXWARNINGS
 		-Wfloat-equal
@@ -258,6 +330,7 @@ target_compile_options(SRB2SDL2 PRIVATE
 		-Winline
 		-Wformat-y2k
 		-Wformat-security
+		-fwrapv
 
 		$<$<VERSION_LESS:$<C_COMPILER_VERSION>,2.9.5>:
 			-Wno-div-by-zero
@@ -281,7 +354,7 @@ target_compile_options(SRB2SDL2 PRIVATE
 
 		$<$<VERSION_GREATER_EQUAL:$<C_COMPILER_VERSION>,4.5.0>:
 			-Wlogical-op
-			-Wno-error=array-bounds
+			#-Wno-error=array-bounds
 		>
 
 		$<$<VERSION_GREATER_EQUAL:$<C_COMPILER_VERSION>,4.6.0>:
@@ -306,11 +379,7 @@ target_compile_options(SRB2SDL2 PRIVATE
 
 		$<$<VERSION_GREATER_EQUAL:$<C_COMPILER_VERSION>,8.1.0>:
 			-Wno-error=format-overflow
-			-Wno-error=stringop-truncation
-			-Wno-error=stringop-overflow
 			-Wno-format-overflow
-			-Wno-stringop-truncation
-			-Wno-stringop-overflow
 			-Wno-error=multistatement-macros
 		>
 
@@ -323,10 +392,13 @@ target_compile_options(SRB2SDL2 PRIVATE
 	$<$<AND:$<COMPILE_LANGUAGE:C>,$<OR:$<C_COMPILER_ID:AppleClang>,$<C_COMPILER_ID:Clang>>>:
 		-Wall
 		-Wno-absolute-value
+		-Wextra
 		-Wno-trigraphs
+		-Wconditional-uninitialized
 		-Wno-error=non-literal-null-conversion
 		-Wno-error=constant-conversion
 		-Wno-error=unused-but-set-variable
+		-fwrapv
 	>
 
 	# C, MSVC
@@ -339,6 +411,9 @@ target_compile_options(SRB2SDL2 PRIVATE
 	# C++, GNU, Clang and Apple Clang
 	$<$<AND:$<COMPILE_LANGUAGE:CXX>,$<OR:$<C_COMPILER_ID:GNU>,$<C_COMPILER_ID:AppleClang>,$<C_COMPILER_ID:Clang>>>:
 		-Wall
+		-Wextra
+		-Wno-trigraphs
+		-Wconditional-uninitialized
 	>
 
 	# C++, MSVC
@@ -356,6 +431,13 @@ if(SRB2_CONFIG_ERRORMODE)
 			/WX
 		>
 	)
+endif()
+
+# Yes we know we use insecure CRT functions...
+if("${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC")
+    target_compile_definitions(SRB2SDL2 PRIVATE -D_CRT_NONSTDC_NO_DEPRECATE)
+    target_compile_definitions(SRB2SDL2 PRIVATE -D_CRT_SECURE_NO_WARNINGS)
+	target_compile_definitions(SRB2SDL2 PRIVATE -D_WINSOCK_DEPRECATED_NO_WARNINGS)
 endif()
 
 # Link warnings configuration
@@ -380,6 +462,11 @@ endif()
 if(SRB2_CONFIG_PACKETDROP)
 	target_compile_definitions(SRB2SDL2 PRIVATE -DPACKETDROP)
 endif()
+if(SRB2_CONFIG_EXECINFO)
+else()
+	target_compile_definitions(SRB2SDL2 PRIVATE -DNOEXECINFO)
+	message(STATUS "You have disabled stack trace dump support")
+endif()
 if(SRB2_CONFIG_ZDEBUG)
 	target_compile_definitions(SRB2SDL2 PRIVATE -DZDEBUG)
 endif()
@@ -389,8 +476,70 @@ if(SRB2_CONFIG_PROFILEMODE AND "${CMAKE_C_COMPILER_ID}" STREQUAL "GNU")
 endif()
 
 add_subdirectory(sdl)
-if(SRB2_CONFIG_ENABLE_TESTS)
-	add_subdirectory(tests)
+
+if(TARGET ZLIB::ZLIB)
+	target_compile_definitions(SRB2SDL2 PRIVATE -DHAVE_ZLIB)
+	message(STATUS "Zlib Found")
+else()
+	message(STATUS "No Zlib Found")
+endif()
+
+if(TARGET PNG::PNG)
+	target_compile_definitions(SRB2SDL2 PRIVATE -DHAVE_PNG)
+	target_sources(SRB2SDL2 PRIVATE apng.c ${libapng_HEADER})
+	target_include_directories(SRB2SDL2 PRIVATE ${libapng_INCLUDE_DIRS} ${libpng_BINARY_DIR})
+	#message(STATUS "libpng inc DIRS at ${libapng_INCLUDE_DIRS}")
+	#message(STATUS "libpng bin DIRS at ${libpng_BINARY_DIR}")
+	#message(STATUS "png.h at ${libapng_HEADER}")
+	message(STATUS "libpng Found")
+else()
+	message(STATUS "No libpng Found")
+endif()
+
+if(TARGET PNG::PNG AND TARGET ZLIB::ZLIB)
+#libpng links zlib too?
+target_link_libraries(SRB2SDL2 PRIVATE PNG::PNG)
+endif()
+
+if(NOT TARGET PNG::PNG AND TARGET ZLIB::ZLIB)
+#got no libpng? we need zlib
+target_link_libraries(SRB2SDL2 PRIVATE ZLIB::ZLIB)
+endif()
+
+if(TARGET gme::gme)
+	target_compile_definitions(SRB2SDL2 PRIVATE -DHAVE_GME)
+	target_link_libraries(SRB2SDL2 PRIVATE gme::gme)
+	message(STATUS "libgme Found")
+else()
+	message(STATUS "No libgme Found")
+endif()
+
+if(TARGET libopenmpt::libopenmpt)
+	target_compile_definitions(SRB2SDL2 PRIVATE -DHAVE_OPENMPT)
+	target_link_libraries(SRB2SDL2 PRIVATE libopenmpt::libopenmpt)
+	message(STATUS "libopenmpt Found")
+else()
+	message(STATUS "No libopenmpt Found")
+endif()
+
+if(TARGET CURL::libcurl)
+	target_compile_definitions(SRB2SDL2 PRIVATE -DHAVE_CURL)
+	target_link_libraries(SRB2SDL2 PRIVATE CURL::libcurl)
+	message(STATUS "libcurl Found")
+else()
+	message(STATUS "No libcurl Found")
+endif()
+
+if(TARGET miniupnpc::miniupnpc)
+	target_compile_definitions(SRB2SDL2 PRIVATE -DHAVE_MINIUPNPC)
+	target_link_libraries(SRB2SDL2 PRIVATE miniupnpc::miniupnpc)
+	message(STATUS "miniupnpc Found")
+else()
+	message(STATUS "No miniupnpc Found")
+endif()
+
+if (CMAKE_SYSTEM_NAME STREQUAL "WindowsStore")
+	target_compile_definitions(SRB2SDL2 PRIVATE -D_WINDOWS_UWP)	
 endif()
 
 # strip debug symbols into separate file when using gcc.

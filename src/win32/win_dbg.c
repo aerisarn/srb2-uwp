@@ -108,6 +108,10 @@ BOOL IsBugTrapLoaded(void)
 #endif		// (defined BUGTRAP)
 
 
+#ifdef _WINDOWS_UWP
+#define wsprintfA sprintf
+#endif
+
 #define NumCodeBytes    16          // Number of code bytes to record.
 #define MaxStackDump    2048    // Maximum number of DWORDS in stack dumps.
 #define StackColumns    8               // Number of columns in stack dump.
@@ -193,6 +197,7 @@ static VOID FPrintf(HANDLE fileHandle, LPCSTR lpFmt, ...)
 // --------------------------------------------------------------------------
 static VOID PrintTime(LPSTR output, FILETIME TimeToPrint)
 {
+#ifndef _WINDOWS_UWP
 	WORD Date, Time;
 	if (FileTimeToLocalFileTime(&TimeToPrint, &TimeToPrint) &&
 		FileTimeToDosDateTime(&TimeToPrint, &Date, &Time))
@@ -203,7 +208,9 @@ static VOID PrintTime(LPSTR output, FILETIME TimeToPrint)
 		          (Time / 2048), (Time / 32) & 63, (Time & 31) * 2);
 	}
 	else
+#endif
 		output[0] = 0;
+
 }
 
 
@@ -223,6 +230,7 @@ static LPTSTR GetFilePart(LPTSTR source)
 // --------------------------------------------------------------------------
 static VOID ShowModuleInfo(HANDLE LogFile, HMODULE ModuleHandle)
 {
+#ifndef _WINDOWS_UWP
 	CHAR ModName[MAX_PATH];
 	IMAGE_DOS_HEADER *DosHeader;
 	IMAGE_NT_HEADERS *NTHeader;
@@ -275,6 +283,7 @@ static VOID ShowModuleInfo(HANDLE LogFile, HMODULE ModuleHandle)
 	__except(EXCEPTION_EXECUTE_HANDLER)
 #endif
 	{}
+#endif
 }
 
 // --------------------------------------------------------------------------
@@ -337,6 +346,7 @@ static VOID RecordModuleList(HANDLE LogFile)
 // --------------------------------------------------------------------------
 static VOID RecordSystemInformation(HANDLE fileHandle)
 {
+#ifndef _WINDOWS_UWP
 	FILETIME     CurrentTime;
 	CHAR         TimeBuffer[100];
 	CHAR         ModuleName[MAX_PATH];
@@ -371,6 +381,7 @@ static VOID RecordSystemInformation(HANDLE fileHandle)
 	// Print out the amount of physical memory, rounded up.
 	FPrintf(fileHandle, "%d MBytes physical memory.\r\n", (MemInfo.dwTotalPhys +
 	        ONEM - 1) / ONEM);
+#endif
 }
 
 // --------------------------------------------------------------------------
@@ -413,7 +424,7 @@ LONG WINAPI RecordExceptionInfo(PEXCEPTION_POINTERS data/*, LPCSTR Message, LPST
 		return EXCEPTION_CONTINUE_SEARCH;
 	}
 	BeenHere = TRUE;
-
+#ifndef _WINDOWS_UWP
 	if (Context)
 	{
 #ifdef _X86_
@@ -669,6 +680,7 @@ LONG WINAPI RecordExceptionInfo(PEXCEPTION_POINTERS data/*, LPCSTR Message, LPST
 	// actually handle the exception - so that things will proceed as per
 	// normal.
 	//BP: should put message for end user to send this file to fix any bug
+#endif
 	if (prevExceptionFilter)
 		return prevExceptionFilter(data);
 	return EXCEPTION_CONTINUE_SEARCH;

@@ -13,19 +13,23 @@ libfind_pkg_check_modules(SDL2_PKGCONF SDL2)
 find_path(SDL2_INCLUDE_DIR
 	NAMES SDL.h
 	PATHS
+		${CMAKE_BINARY_DIR}/SDL-uwp-gl/include
 		${SDL2_PKGCONF_INCLUDE_DIRS}
 		"/usr/include/SDL2"
 		"/usr/local/include/SDL2"
 )
+MESSAGE("SDL2_INCLUDE_DIR is ${SDL2_INCLUDE_DIR}")
 
 # library
 find_library(SDL2_LIBRARY
 	NAMES SDL2
 	PATHS
+		${CMAKE_BINARY_DIR}/SDL-uwp-gl/VisualC-WinRT/x64/Release/SDL-UWP
 		${SDL2_PKGCONF_LIBRARY_DIRS}
 		"/usr/lib"
 		"/usr/local/lib"
 )
+MESSAGE("SDL2_LIBRARY is ${SDL2_LIBRARY}")
 
 # set include dir variables
 set(SDL2_PROCESS_INCLUDES SDL2_INCLUDE_DIR)

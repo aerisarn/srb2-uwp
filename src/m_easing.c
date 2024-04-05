@@ -87,7 +87,7 @@ static fixed_t fixlog2(fixed_t a)
 	}
 
 	if (a <= FRACUNIT)
-		return -y;
+		return -(INT32)y;
 
 	return y;
 }

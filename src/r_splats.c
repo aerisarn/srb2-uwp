@@ -10,6 +10,10 @@
 /// \file  r_splats.c
 /// \brief Floor splats
 
+#ifdef _WIN32
+#pragma warning(disable:4146)
+#endif
+
 #include "r_draw.h"
 #include "r_fps.h"
 #include "r_main.h"
