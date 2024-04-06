@@ -39,7 +39,7 @@ static CV_PossibleValue_t fpscap_cons_t[] = {
 	{0, "Match refresh rate"},
 	{0, NULL}
 };
-consvar_t cv_fpscap = CVAR_INIT ("fpscap", "Match refresh rate", CV_SAVE, fpscap_cons_t, NULL);
+consvar_t cv_fpscap = CVAR_INIT ("fpscap", "Unlimited", CV_SAVE, fpscap_cons_t, NULL);
 
 ps_metric_t ps_interp_frac = {0};
 ps_metric_t ps_interp_lag = {0};
@@ -70,7 +70,9 @@ UINT32 R_GetFramerateCap(void)
 
 boolean R_UsingFrameInterpolation(void)
 {
-	return ((R_GetFramerateCap() != 0 && R_GetFramerateCap() != TICRATE) || cv_timescale.value < FRACUNIT);
+	return ((R_GetFramerateCap() != 0 && //Disabled
+			R_GetFramerateCap() != TICRATE) 
+		|| cv_timescale.value < FRACUNIT);
 }
 
 static viewvars_t p1view_old;
