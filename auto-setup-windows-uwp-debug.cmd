@@ -53,8 +53,8 @@ goto aftercopyright
 
 setlocal
 rem -- Always operate within the build-arm folder
-if not exist "%~dp0\build-uwp" mkdir "%~dp0\build-uwp"
-pushd "%~dp0\build-uwp"
+if not exist "%~dp0\build-uwp-debug" mkdir "%~dp0\build-uwp-debug"
+pushd "%~dp0\build-uwp-debug"
 
 if exist ..\build\vcpkg if exist ..\build\vcpkg\* git -C ../build/vcpkg pull
 
@@ -69,9 +69,9 @@ if not exist mesa-uwp (
 if exist sdl-uwp-gl if exist sdl-uwp-gl\* git -C ./sdl-uwp-gl pull
 if not exist sdl-uwp-gl git clone https://github.com/aerisarn/SDL-uwp-gl.git
 
-MSBuild.exe sdl-uwp-gl/VisualC-WinRT/SDL-UWP.sln /property:Configuration=Release
+MSBuild.exe sdl-uwp-gl/VisualC-WinRT/SDL-UWP.sln /property:Configuration=Debug
 
-mkdir "%~dp0\build-uwp\vcpkg_installed"
+mkdir "%~dp0\build-uwp-debug\vcpkg_installed"
 
 cmake -S .. -B . ^
 	-DVCPKG_TARGET_TRIPLET="x64-uwp-static-md" ^
@@ -80,7 +80,7 @@ cmake -S .. -B . ^
 	-DFORCE_CROSSCOMPILE=TRUE ^
 	-DCMAKE_SYSTEM_NAME="WindowsStore" ^
 	-DCMAKE_SYSTEM_VERSION="10.0" ^
-	-DCMAKE_BUILD_TYPE=Release
+	-DCMAKE_BUILD_TYPE=Debug
 rem cmake --build . --config Release -- -maxcpucount -verbosity:minimal
 
 rem -- If successful, show the build	

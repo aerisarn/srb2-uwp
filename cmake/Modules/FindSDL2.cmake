@@ -25,6 +25,7 @@ find_library(SDL2_LIBRARY
 	NAMES SDL2
 	PATHS
 		${CMAKE_BINARY_DIR}/SDL-uwp-gl/VisualC-WinRT/x64/Release/SDL-UWP
+		${CMAKE_BINARY_DIR}/SDL-uwp-gl/VisualC-WinRT/x64/Debug/SDL-UWP
 		${SDL2_PKGCONF_LIBRARY_DIRS}
 		"/usr/lib"
 		"/usr/local/lib"
