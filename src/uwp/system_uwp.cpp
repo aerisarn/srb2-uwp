@@ -130,3 +130,92 @@ std::string PickAFolder()
     }
     return out;
 }
+
+inline float ConvertDipsToPixels(float dips, float dpi)
+{
+    static const float dipsPerInch = 96.0f;
+    return floorf(dips * dpi / dipsPerInch + 0.5f); // Arrotonda all'intero più vicino.
+}
+
+bool is_running_on_xbox(void)
+{
+    Platform::String^ device_family = Windows::System::Profile::AnalyticsInfo::VersionInfo->DeviceFamily;
+    return (device_family == L"Windows.Xbox");
+}
+
+extern "C" int uwp_get_height(void)
+{
+    /* This function must be performed within UI thread,
+     * otherwise it will cause a crash in specific cases
+     * https://github.com/libretro/RetroArch/issues/13491 */
+    float surface_scale = 0;
+    int ret = -1;
+    volatile bool finished = false;
+    Windows::ApplicationModel::Core::CoreApplication::MainView->CoreWindow->Dispatcher->RunAsync(
+        CoreDispatcherPriority::Normal,
+        ref new Windows::UI::Core::DispatchedHandler([&surface_scale, &ret, &finished]()
+            {
+                if (is_running_on_xbox())
+                {
+                    const Windows::Graphics::Display::Core::HdmiDisplayInformation^ hdi = Windows::Graphics::Display::Core::HdmiDisplayInformation::GetForCurrentView();
+                    if (hdi)
+                        ret = Windows::Graphics::Display::Core::HdmiDisplayInformation::GetForCurrentView()->GetCurrentDisplayMode()->ResolutionHeightInRawPixels;
+                }
+
+                if (ret == -1)
+                {
+                    const LONG32 resolution_scale = static_cast<LONG32>(Windows::Graphics::Display::DisplayInformation::GetForCurrentView()->ResolutionScale);
+                    surface_scale = static_cast<float>(resolution_scale) / 100.0f;
+                    ret = static_cast<LONG32>(
+                        CoreWindow::GetForCurrentThread()->Bounds.Height
+                        * surface_scale);
+                }
+                finished = true;
+            }));
+    Windows::UI::Core::CoreWindow^ corewindow = Windows::UI::Core::CoreWindow::GetForCurrentThread();
+    while (!finished)
+    {
+        if (corewindow)
+            corewindow->Dispatcher->ProcessEvents(Windows::UI::Core::CoreProcessEventsOption::ProcessAllIfPresent);
+    }
+    return ret;
+}
+
+extern "C" int uwp_get_width(void)
+{
+    /* This function must be performed within UI thread,
+     * otherwise it will cause a crash in specific cases
+     * https://github.com/libretro/RetroArch/issues/13491 */
+    float surface_scale = 0;
+    int returnValue = -1;
+    volatile bool finished = false;
+    Windows::ApplicationModel::Core::CoreApplication::MainView->CoreWindow->Dispatcher->RunAsync(
+        CoreDispatcherPriority::Normal,
+        ref new Windows::UI::Core::DispatchedHandler([&surface_scale, &returnValue, &finished]()
+            {
+                if (is_running_on_xbox())
+                {
+                    const Windows::Graphics::Display::Core::HdmiDisplayInformation^ hdi = Windows::Graphics::Display::Core::HdmiDisplayInformation::GetForCurrentView();
+                    if (hdi)
+                        returnValue = Windows::Graphics::Display::Core::HdmiDisplayInformation::GetForCurrentView()->GetCurrentDisplayMode()->ResolutionWidthInRawPixels;
+                }
+
+                if (returnValue == -1)
+                {
+                    const LONG32 resolution_scale = static_cast<LONG32>(Windows::Graphics::Display::DisplayInformation::GetForCurrentView()->ResolutionScale);
+                    surface_scale = static_cast<float>(resolution_scale) / 100.0f;
+                    returnValue = static_cast<LONG32>(
+                        CoreWindow::GetForCurrentThread()->Bounds.Width
+                        * surface_scale);
+                }
+                finished = true;
+            }));
+    Windows::UI::Core::CoreWindow^ corewindow = Windows::UI::Core::CoreWindow::GetForCurrentThread();
+    while (!finished)
+    {
+        if (corewindow)
+            corewindow->Dispatcher->ProcessEvents(Windows::UI::Core::CoreProcessEventsOption::ProcessAllIfPresent);
+    }
+
+    return returnValue;
+}
