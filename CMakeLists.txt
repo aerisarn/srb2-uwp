@@ -78,7 +78,6 @@ option(SRB2_CONFIG_PROFILEMODE "Compile for profiling (GCC only)." OFF)
 set(SRB2_CONFIG_ASSET_DIRECTORY "" CACHE PATH "Path to directory that contains all asset files for the installer. If set, assets will be part of installation and cpack.")
 
 # Dependencies
-add_subdirectory(thirdparty)
 
 if(SRB2_CONFIG_SHARED_INTERNAL_LIBRARIES)
 	set(SRB2_INTERNAL_LIBRARY_TYPE SHARED)

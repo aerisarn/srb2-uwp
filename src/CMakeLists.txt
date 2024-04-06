@@ -116,8 +116,8 @@ if (CMAKE_SYSTEM_NAME STREQUAL "WindowsStore")
 	set(ResourceFiles 
 		uwp/Package.appxmanifest
 		uwp/SRB2_TemporaryKey.pfx
-		${SDL2_INCLUDE_DIR}/../src/main/winrt/SDL2-WinRTResource_BlankCursor.cur
-		${SDL2_INCLUDE_DIR}/../src/main/winrt/SDL2-WinRTResources.rc
+		${CMAKE_BINARY_DIR}/SDL-uwp-gl/src/main/winrt/SDL2-WinRTResource_BlankCursor.cur
+		${CMAKE_BINARY_DIR}/SDL-uwp-gl/src/main/winrt/SDL2-WinRTResources.rc
 	)
 
 	set(AssetFiles
@@ -157,13 +157,13 @@ if (CMAKE_SYSTEM_NAME STREQUAL "WindowsStore")
 		${DepFiles}
 #		${Models}
 		uwp/system_uwp.cpp
-		${SDL2_INCLUDE_DIR}/../src/main/winrt/SDL_winrt_main_NonXAML.cpp)
+		${CMAKE_BINARY_DIR}/SDL-uwp-gl/src/main/winrt/SDL_winrt_main_NonXAML.cpp)
 	set_source_files_properties (uwp/system_uwp.cpp
 		PROPERTIES COMPILE_OPTIONS "-permissive;-ZW")
 	set_source_files_properties( uwp/system_uwp.cpp PROPERTIES SKIP_PRECOMPILE_HEADERS TRUE )
-	set_source_files_properties (${SDL2_INCLUDE_DIR}/../src/main/winrt/SDL_winrt_main_NonXAML.cpp 
+	set_source_files_properties (${CMAKE_BINARY_DIR}/SDL-uwp-gl/src/main/winrt/SDL_winrt_main_NonXAML.cpp 
 		PROPERTIES COMPILE_OPTIONS "-permissive;-ZW")
-	set_source_files_properties( ${SDL2_INCLUDE_DIR}/../src/main/winrt/SDL_winrt_main_NonXAML.cpp PROPERTIES SKIP_PRECOMPILE_HEADERS TRUE )
+	set_source_files_properties( ${CMAKE_BINARY_DIR}/SDL-uwp-gl/src/main/winrt/SDL_winrt_main_NonXAML.cpp PROPERTIES SKIP_PRECOMPILE_HEADERS TRUE )
 	
 	set_property(SOURCE ${AssetFiles} PROPERTY VS_DEPLOYMENT_CONTENT 1)
 	set_property(SOURCE ${AssetFiles} PROPERTY VS_DEPLOYMENT_LOCATION "Assets")

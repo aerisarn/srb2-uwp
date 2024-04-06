@@ -280,7 +280,12 @@ static inline void I_InitUPnP(void)
 	struct UPNPDev * devlist = NULL;
 	int upnp_error = -2;
 	CONS_Printf(M_GetText("Looking for UPnP Internet Gateway Device\n"));
+#if MINIUPNPC_API_VERSION == 10
+	// Distributed with Debian jessie.
 	devlist = upnpDiscover(2000, NULL, NULL, 0, false, &upnp_error);
+#else
+	devlist = upnpDiscover(2000, NULL, NULL, UPNP_LOCAL_PORT_ANY, 0, 2, &upnp_error);
+#endif
 	if (devlist)
 	{
 		struct UPNPDev *dev = devlist;
@@ -300,7 +305,15 @@ static inline void I_InitUPnP(void)
 
 		UPNP_GetValidIGD(devlist, &urls, &data, lanaddr, sizeof(lanaddr));
 		CONS_Printf(M_GetText("Local LAN IP address: %s\n"), lanaddr);
+
+#if MINIUPNPC_API_VERSION >= 16
+		int responsecode = 200;
+		descXML = miniwget(dev->descURL, &descXMLsize, 0, &responsecode);
+#elif MINIUPNPC_API_VERSION >= 9
+		descXML = miniwget(dev->descURL, &descXMLsize, 0);
+#else
 		descXML = miniwget(dev->descURL, &descXMLsize);
+#endif	
 		if (descXML)
 		{
 			parserootdesc(descXML, descXMLsize, &data);
@@ -308,7 +321,11 @@ static inline void I_InitUPnP(void)
 			descXML = NULL;
 			memset(&urls, 0, sizeof(struct UPNPUrls));
 			memset(&data, 0, sizeof(struct IGDdatas));
+#if MINIUPNPC_API_VERSION >= 9
+			GetUPNPUrls(&urls, &data, dev->descURL, 0);
+#else
 			GetUPNPUrls(&urls, &data, dev->descURL);
+#endif
 			I_AddExitFunc(I_ShutdownUPnP);
 		}
 		freeUPNPDevlist(devlist);
