@@ -111,9 +111,6 @@ if (CMAKE_SYSTEM_NAME STREQUAL "WindowsStore")
 	message("Adding UWP resources")
 	message("SDL2_LIBRARY:" ${SDL2_LIBRARY})
 
-	#file(READ common/platform/uwp/Package.appxmanifest MANIFEST)
-	#string(REPLACE "9.9.9.9" ${MS_VERSION} MANIFEST ${MANIFEST})
-	#file(WRITE ${CMAKE_BINARY_DIR}/Package.appxmanifest ${MANIFEST})
 	set(ResourceFiles 
 		uwp/Package.appxmanifest
 		uwp/SRB2_TemporaryKey.pfx
@@ -130,28 +127,33 @@ if (CMAKE_SYSTEM_NAME STREQUAL "WindowsStore")
 		uwp/assets/StoreLogo.png
 		uwp/assets/Wide310x150Logo.scale-200.png
 	)
+	
+	#file(GLOB_RECURSE Models ../assets/models
+    # "*.png"
+    # "*.md3"
+	#)
 
 	set(DepFiles
-		${CMAKE_BINARY_DIR}/gamedata.dat
-		${CMAKE_BINARY_DIR}/patch.pk3
-		${CMAKE_BINARY_DIR}/models.dat
-		${CMAKE_BINARY_DIR}/patch_music.pk3
-		${CMAKE_BINARY_DIR}/player.dta
-		${CMAKE_BINARY_DIR}/zones.pk3
-		${CMAKE_BINARY_DIR}/music.dta
-		${CMAKE_BINARY_DIR}/srb2.pk3
+		../assets/models.dat
+		../assets/music.dta
+		../assets/patch.pk3
+		../assets/player.dta
+		../assets/patch.pk3
+		../assets/srb2.pk3
+		../assets/zones.pk3	
 		C:/Program\ Files\ \(x86\)/Windows\ Kits/10/Redist/D3D/x64/dxil.dll
 		${CMAKE_BINARY_DIR}/mesa-uwp/opengl32.dll
 		${CMAKE_BINARY_DIR}/mesa-uwp/libglapi.dll
 		${CMAKE_BINARY_DIR}/mesa-uwp/libgallium_wgl.dll
 		${CMAKE_BINARY_DIR}/mesa-uwp/z-1.dll
-		${CMAKE_BINARY_DIR}/SDL-uwp-gl/VisualC-WinRT/x64/Release/SDL-UWP/SDL2.dll
+		${CMAKE_BINARY_DIR}/SDL-uwp-gl/VisualC-WinRT/x64/${CMAKE_BUILD_TYPE}/SDL-UWP/SDL2.dll
 	)
 
 	target_sources(SRB2SDL2 PRIVATE
 		${ResourceFiles}
 		${AssetFiles}
 		${DepFiles}
+#		${Models}
 		uwp/system_uwp.cpp
 		${SDL2_INCLUDE_DIR}/../src/main/winrt/SDL_winrt_main_NonXAML.cpp)
 	set_source_files_properties (uwp/system_uwp.cpp
@@ -166,6 +168,9 @@ if (CMAKE_SYSTEM_NAME STREQUAL "WindowsStore")
 
 	set_property(SOURCE ${DepFiles} PROPERTY VS_DEPLOYMENT_CONTENT 1)
 	set_property(SOURCE ${DepFiles} PROPERTY VS_DEPLOYMENT_LOCATION ".")
+
+#	set_property(SOURCE ${Models} PROPERTY VS_DEPLOYMENT_CONTENT 1)
+#	set_property(SOURCE ${Models} PROPERTY VS_DEPLOYMENT_LOCATION "models")
 	
 	set_target_properties(SRB2SDL2 PROPERTIES RESOURCE 
 		"${ResourceFiles} ${DepFiles} ${AssetFiles}")
