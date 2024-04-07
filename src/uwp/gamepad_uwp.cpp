@@ -52,9 +52,9 @@ static inline int SDLGameControllerAxisToGameAxis(SDL_GameControllerAxis axis)
 	switch (axis)
 	{
 	case SDL_CONTROLLER_AXIS_LEFTX:
-		return 1; //{1, "X-Axis"};
+		return 2; //{1, "X-Axis"};
 	case SDL_CONTROLLER_AXIS_LEFTY:
-		return 2; //{2, "Y-Axis"}
+		return 1; //{2, "Y-Axis"}
 	case SDL_CONTROLLER_AXIS_RIGHTX:
 		return 3; //{3, "Z-Axis"}
 	case SDL_CONTROLLER_AXIS_RIGHTY:
