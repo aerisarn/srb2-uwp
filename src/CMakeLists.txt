@@ -157,6 +157,7 @@ if (CMAKE_SYSTEM_NAME STREQUAL "WindowsStore")
 		${DepFiles}
 #		${Models}
 		uwp/system_uwp.cpp
+		uwp/gamepad_uwp.cpp
 		${CMAKE_BINARY_DIR}/SDL-uwp-gl/src/main/winrt/SDL_winrt_main_NonXAML.cpp)
 	set_source_files_properties (uwp/system_uwp.cpp
 		PROPERTIES COMPILE_OPTIONS "-permissive;-ZW")

@@ -1552,6 +1552,10 @@ static int joy_open2(int joyindex)
 //
 void I_InitJoystick(void)
 {
+#ifdef _WINDOWS_UWP
+	return;
+#endif
+
 	SDL_Joystick *newjoy = NULL;
 
 	//I_ShutdownJoystick();
@@ -1574,7 +1578,6 @@ void I_InitJoystick(void)
 			return;
 		}
 #ifdef _WINDOWS_UWP
-		Sleep(500);
 #endif
 	}
 
@@ -1604,6 +1607,10 @@ void I_InitJoystick(void)
 
 void I_InitJoystick2(void)
 {
+#ifdef _WINDOWS_UWP
+	return;
+#endif
+
 	SDL_Joystick *newjoy = NULL;
 
 	//I_ShutdownJoystick2();
@@ -1626,7 +1633,6 @@ void I_InitJoystick2(void)
 			return;
 		}
 #ifdef _WINDOWS_UWP
-		Sleep(500);
 #endif
 	}
 

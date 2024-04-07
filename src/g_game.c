@@ -397,8 +397,8 @@ consvar_t cv_cam_lockonboss[2] = {
 	CVAR_INIT ("cam2_lockaimassist", "Full", CV_SAVE|CV_ALLOWLUA, lockedassist_cons_t, NULL),
 };
 
-consvar_t cv_moveaxis = CVAR_INIT ("joyaxis_move", "Y-Axis", CV_SAVE, joyaxis_cons_t, NULL);
-consvar_t cv_sideaxis = CVAR_INIT ("joyaxis_side", "X-Axis", CV_SAVE, joyaxis_cons_t, NULL);
+consvar_t cv_moveaxis = CVAR_INIT ("joyaxis_move", "X-Axis", CV_SAVE, joyaxis_cons_t, NULL);
+consvar_t cv_sideaxis = CVAR_INIT ("joyaxis_side", "Y-Axis", CV_SAVE, joyaxis_cons_t, NULL);
 consvar_t cv_lookaxis = CVAR_INIT ("joyaxis_look", "X-Rudder-", CV_SAVE, joyaxis_cons_t, NULL);
 consvar_t cv_turnaxis = CVAR_INIT ("joyaxis_turn", "Z-Axis", CV_SAVE, joyaxis_cons_t, NULL);
 consvar_t cv_jumpaxis = CVAR_INIT ("joyaxis_jump", "None", CV_SAVE, joyaxis_cons_t, NULL);
@@ -1156,6 +1156,9 @@ void G_BuildTiccmd(ticcmd_t *cmd, INT32 realtics, UINT8 ssplayer)
 		mldy = -mouse2.mlookdy;
 		G_CopyTiccmd(cmd, I_BaseTiccmd2(), 1); // empty, or external driver
 	}
+#ifdef _WINDOWS_UWP
+	usejoystick = 1;
+#endif
 
 	if (menuactive || CON_Ready() || chat_on)
 		mdx = mdy = mldy = 0;

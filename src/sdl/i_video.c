@@ -907,7 +907,11 @@ static void Impl_HandleJoystickButtonEvent(SDL_JoyButtonEvent evt, Uint32 type)
 	if (event.type != ev_console) D_PostEvent(&event);
 }
 
-
+void uwp_handle_device_added(SDL_ControllerDeviceEvent device_event);
+void uwp_handle_device_removed(SDL_ControllerDeviceEvent device_event);
+void uwp_handle_device_remapped(SDL_ControllerDeviceEvent device_event);
+void uwp_handle_device_button(SDL_ControllerButtonEvent device_event);
+void uwp_handle_device_axis(SDL_ControllerAxisEvent device_event);
 
 void I_GetEvent(void)
 {
@@ -946,6 +950,7 @@ void I_GetEvent(void)
 			case SDL_MOUSEWHEEL:
 				Impl_HandleMouseWheelEvent(evt.wheel);
 				break;
+#ifndef _WINDOWS_UWP
 			case SDL_JOYAXISMOTION:
 				Impl_HandleJoystickAxisEvent(evt.jaxis);
 				break;
@@ -1088,6 +1093,29 @@ void I_GetEvent(void)
 				if (currentMenu == &OP_JoystickSetDef)
 					M_SetupJoystickMenu(0);
 				break;
+#else
+			case SDL_CONTROLLERAXISMOTION: /**< Game controller axis motion */
+				uwp_handle_device_axis(evt.caxis);
+				break;
+			case SDL_CONTROLLERBUTTONDOWN:          /**< Game controller button pressed */
+			case SDL_CONTROLLERBUTTONUP:            /**< Game controller button released */
+				uwp_handle_device_button(evt.cbutton);
+				break;
+			case SDL_CONTROLLERDEVICEADDED:         /**< A new Game controller has been inserted into the system */
+				uwp_handle_device_added(evt.cdevice);
+				break;
+			case SDL_CONTROLLERDEVICEREMOVED:       /**< An opened Game controller has been removed */
+				uwp_handle_device_removed(evt.cdevice);
+				break;
+			case SDL_CONTROLLERDEVICEREMAPPED:      /**< The controller mapping was updated */
+				uwp_handle_device_remapped(evt.cdevice);
+				break;
+			case SDL_CONTROLLERTOUCHPADDOWN:        /**< Game controller touchpad was touched */
+			case SDL_CONTROLLERTOUCHPADMOTION:      /**< Game controller touchpad finger was moved */
+			case SDL_CONTROLLERTOUCHPADUP:          /**< Game controller touchpad finger was lifted */
+			case SDL_CONTROLLERSENSORUPDATE:        /**< Game controller sensor was updated */
+				break;
+#endif
 			case SDL_QUIT:
 				LUA_HookBool(true, HOOK(GameQuit));
 				I_Quit();
@@ -1681,8 +1709,9 @@ static SDL_bool Impl_CreateWindow(SDL_bool fullscreen)
 
 	if (window != NULL)
 		return SDL_FALSE;
-
+#ifndef _WINDOWS_UWP
 	if (fullscreen)
+#endif
 		flags |= SDL_WINDOW_FULLSCREEN_DESKTOP;
 
 	if (borderlesswindow)
@@ -1773,6 +1802,11 @@ static void Impl_VideoSetupBuffer(void)
 	}
 }
 
+#ifdef _WINDOWS_UWP
+int uwp_get_height(void);
+int uwp_get_width(void);
+#endif
+
 void I_StartupGraphics(void)
 {
 	if (dedicated)
@@ -1797,7 +1831,12 @@ void I_StartupGraphics(void)
 
 #if !defined(HAVE_TTF)
 	// Previously audio was init here for questionable reasons?
+#ifdef _WINDOWS_UWP
+	//we want gamepads as early as possible
+	if (SDL_InitSubSystem(SDL_INIT_VIDEO | SDL_INIT_GAMECONTROLLER) < 0)
+#else
 	if (SDL_InitSubSystem(SDL_INIT_VIDEO) < 0)
+#endif
 	{
 		CONS_Printf(M_GetText("Couldn't initialize SDL's Video System: %s\n"), SDL_GetError());
 		return;
@@ -1876,10 +1915,19 @@ void I_StartupGraphics(void)
 	// Create window
 	//Impl_CreateWindow(USE_FULLSCREEN);
 	//Impl_SetWindowName("SRB2 "VERSIONSTRING);
-	VID_SetMode(VID_GetModeForSize(BASEVIDWIDTH, BASEVIDHEIGHT));
 
-	vid.width = BASEVIDWIDTH; // Default size for startup
-	vid.height = BASEVIDHEIGHT; // BitsPerPixel is the SDL interface's
+	size_t a_height = BASEVIDHEIGHT;
+	size_t a_width = BASEVIDWIDTH;
+
+#ifdef _WINDOWS_UWP
+	a_height = uwp_get_height();
+	a_width = uwp_get_width();
+#endif
+
+	VID_SetMode(VID_GetModeForSize(a_width, a_height));
+
+	vid.width = a_width; // Default size for startup
+	vid.height = a_height; // BitsPerPixel is the SDL interface's
 	vid.recalc = true; // Set up the console stufff
 	vid.direct = NULL; // Maybe direct access?
 	vid.bpp = 1; // This is the game engine's Bpp
@@ -1889,8 +1937,8 @@ void I_StartupGraphics(void)
 	I_ShutdownTTF();
 #endif
 
-	VID_SetMode(VID_GetModeForSize(BASEVIDWIDTH, BASEVIDHEIGHT));
-
+	VID_SetMode(VID_GetModeForSize(a_width, a_height));
+	
 	if (M_CheckParm("-nomousegrab"))
 		mousegrabok = SDL_FALSE;
 #if 0 // defined (_DEBUG)
