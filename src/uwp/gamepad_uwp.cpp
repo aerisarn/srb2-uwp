@@ -52,17 +52,17 @@ static inline int SDLGameControllerAxisToGameAxis(SDL_GameControllerAxis axis)
 	switch (axis)
 	{
 	case SDL_CONTROLLER_AXIS_LEFTX:
-		return 1;
+		return 1; //{1, "X-Axis"};
 	case SDL_CONTROLLER_AXIS_LEFTY:
-		return 0;
+		return 2; //{2, "Y-Axis"}
 	case SDL_CONTROLLER_AXIS_RIGHTX:
-		return 2;
+		return 3; //{3, "Z-Axis"}
 	case SDL_CONTROLLER_AXIS_RIGHTY:
-		return 3;
+		return 4; //{4, "X-Rudder"}
 	case SDL_CONTROLLER_AXIS_TRIGGERLEFT:
-		return 4;
+		return 5; //{5, "Y-Rudder"}
 	case SDL_CONTROLLER_AXIS_TRIGGERRIGHT:
-		return 5;
+		return 6; //{6, "Z-Rudder"}
 	}
 	return 0;
 }
@@ -223,19 +223,24 @@ extern "C" void uwp_handle_device_axis(SDL_ControllerAxisEvent evt)
 	if (evt.axis > JOYAXISSET * 2)
 		return;
 
-	event.key = SDLGameControllerAxisToGameAxis((SDL_GameControllerAxis)evt.axis) / 2;
-	if (evt.axis == SDL_GameControllerAxis::SDL_CONTROLLER_AXIS_LEFTX ||
-		evt.axis == SDL_GameControllerAxis::SDL_CONTROLLER_AXIS_RIGHTX ||
-		evt.axis == SDL_GameControllerAxis::SDL_CONTROLLER_AXIS_TRIGGERLEFT)
+	auto axisval = SDLGameControllerAxisToGameAxis((SDL_GameControllerAxis)evt.axis);
+	if (axisval == -1) return;
+
+	if (axisval % 2)
 	{
+		axisval /= 2;
+		event.key = axisval;
 		event.x = SDLJoyAxis(evt.value, event.type);
 	}
-	else if (evt.axis == SDL_GameControllerAxis::SDL_CONTROLLER_AXIS_LEFTY ||
-		evt.axis == SDL_GameControllerAxis::SDL_CONTROLLER_AXIS_RIGHTY ||
-		evt.axis == SDL_GameControllerAxis::SDL_CONTROLLER_AXIS_TRIGGERRIGHT)
+	else
 	{
+		axisval--;
+		axisval /= 2;
+		event.key = axisval;
 		event.y = SDLJoyAxis(evt.value, event.type);
 	}
+
+
 	D_PostEvent(&event);
 }
 

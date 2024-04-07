@@ -130,10 +130,395 @@ if (CMAKE_SYSTEM_NAME STREQUAL "WindowsStore")
 		uwp/assets/Wide310x150Logo.scale-200.png
 	)
 	
-	#file(GLOB_RECURSE Models ../assets/models
-    # "*.png"
-    # "*.md3"
-	#)
+	set(ModelsBOSS
+${CMAKE_SOURCE_DIR}/assets/models/BOSS/BRAK.png
+${CMAKE_SOURCE_DIR}/assets/models/BOSS/BRAK_blend.png
+${CMAKE_SOURCE_DIR}/assets/models/BOSS/EGGM.png
+${CMAKE_SOURCE_DIR}/assets/models/BOSS/EGGM_blend.png
+${CMAKE_SOURCE_DIR}/assets/models/BOSS/EGGN.png
+${CMAKE_SOURCE_DIR}/assets/models/BOSS/EGGN_blend.png
+${CMAKE_SOURCE_DIR}/assets/models/BOSS/EGGO.png
+${CMAKE_SOURCE_DIR}/assets/models/BOSS/EGGO_blend.png
+${CMAKE_SOURCE_DIR}/assets/models/BOSS/EGGP.png
+${CMAKE_SOURCE_DIR}/assets/models/BOSS/EGGP_blend.png
+${CMAKE_SOURCE_DIR}/assets/models/BOSS/EGR1.png
+${CMAKE_SOURCE_DIR}/assets/models/BOSS/EGR1_blend.png
+${CMAKE_SOURCE_DIR}/assets/models/BOSS/METL.png
+${CMAKE_SOURCE_DIR}/assets/models/BOSS/METL_blend.png
+${CMAKE_SOURCE_DIR}/assets/models/BOSS/SEBH.png
+${CMAKE_SOURCE_DIR}/assets/models/BOSS/TANK.png
+${CMAKE_SOURCE_DIR}/assets/models/BOSS/BRAK.md3
+${CMAKE_SOURCE_DIR}/assets/models/BOSS/EGGM.md3
+${CMAKE_SOURCE_DIR}/assets/models/BOSS/EGGN.md3
+${CMAKE_SOURCE_DIR}/assets/models/BOSS/EGGO.md3
+${CMAKE_SOURCE_DIR}/assets/models/BOSS/EGGP.md3
+${CMAKE_SOURCE_DIR}/assets/models/BOSS/EGR1.md3
+${CMAKE_SOURCE_DIR}/assets/models/BOSS/METL.md3
+${CMAKE_SOURCE_DIR}/assets/models/BOSS/SEBH.md3
+${CMAKE_SOURCE_DIR}/assets/models/BOSS/TANK.md3
+	)
+
+	set(ModelsENMY
+${CMAKE_SOURCE_DIR}/assets/models/ENMY/ARCH.png
+${CMAKE_SOURCE_DIR}/assets/models/ENMY/ARCH_blend.png
+${CMAKE_SOURCE_DIR}/assets/models/ENMY/BGOM.png
+${CMAKE_SOURCE_DIR}/assets/models/ENMY/BMNE.png
+${CMAKE_SOURCE_DIR}/assets/models/ENMY/BRKN.png
+${CMAKE_SOURCE_DIR}/assets/models/ENMY/BUMB.png
+${CMAKE_SOURCE_DIR}/assets/models/ENMY/BUMB_blend.png
+${CMAKE_SOURCE_DIR}/assets/models/ENMY/BUZZ.png
+${CMAKE_SOURCE_DIR}/assets/models/ENMY/BUZZ_blend.png
+${CMAKE_SOURCE_DIR}/assets/models/ENMY/CACO.png
+${CMAKE_SOURCE_DIR}/assets/models/ENMY/CANA.png
+${CMAKE_SOURCE_DIR}/assets/models/ENMY/CANA_blend.png
+${CMAKE_SOURCE_DIR}/assets/models/ENMY/CBBS.png
+${CMAKE_SOURCE_DIR}/assets/models/ENMY/CBFS.png
+${CMAKE_SOURCE_DIR}/assets/models/ENMY/CBFS_blend.png
+${CMAKE_SOURCE_DIR}/assets/models/ENMY/CCOM.png
+${CMAKE_SOURCE_DIR}/assets/models/ENMY/CCOM_blend.png
+${CMAKE_SOURCE_DIR}/assets/models/ENMY/CR2B.png
+${CMAKE_SOURCE_DIR}/assets/models/ENMY/CR2B_blend.png
+${CMAKE_SOURCE_DIR}/assets/models/ENMY/CRAB.png
+${CMAKE_SOURCE_DIR}/assets/models/ENMY/CRAB_blend.png
+${CMAKE_SOURCE_DIR}/assets/models/ENMY/CSTA.png
+${CMAKE_SOURCE_DIR}/assets/models/ENMY/DETN.png
+${CMAKE_SOURCE_DIR}/assets/models/ENMY/DETN_blend.png
+${CMAKE_SOURCE_DIR}/assets/models/ENMY/DRAB.png
+${CMAKE_SOURCE_DIR}/assets/models/ENMY/DRAB_blend.png
+${CMAKE_SOURCE_DIR}/assets/models/ENMY/DRIL.png
+${CMAKE_SOURCE_DIR}/assets/models/ENMY/ESHI.png
+${CMAKE_SOURCE_DIR}/assets/models/ENMY/ESHI_blend.png
+${CMAKE_SOURCE_DIR}/assets/models/ENMY/FAKE.png
+${CMAKE_SOURCE_DIR}/assets/models/ENMY/FISH.png
+${CMAKE_SOURCE_DIR}/assets/models/ENMY/FISH_blend.png
+${CMAKE_SOURCE_DIR}/assets/models/ENMY/FLSH.png
+${CMAKE_SOURCE_DIR}/assets/models/ENMY/GOOM.png
+${CMAKE_SOURCE_DIR}/assets/models/ENMY/GSNH.png
+${CMAKE_SOURCE_DIR}/assets/models/ENMY/GSNL.png
+${CMAKE_SOURCE_DIR}/assets/models/ENMY/GSNP.png
+${CMAKE_SOURCE_DIR}/assets/models/ENMY/GSNP_blend.png
+${CMAKE_SOURCE_DIR}/assets/models/ENMY/HBAT.png
+${CMAKE_SOURCE_DIR}/assets/models/ENMY/HBAT_blend.png
+${CMAKE_SOURCE_DIR}/assets/models/ENMY/HIVE.png
+${CMAKE_SOURCE_DIR}/assets/models/ENMY/HIVE_blend.png
+${CMAKE_SOURCE_DIR}/assets/models/ENMY/JETB.png
+${CMAKE_SOURCE_DIR}/assets/models/ENMY/JETB_blend.png
+${CMAKE_SOURCE_DIR}/assets/models/ENMY/JETG.png
+${CMAKE_SOURCE_DIR}/assets/models/ENMY/JETG_blend.png
+${CMAKE_SOURCE_DIR}/assets/models/ENMY/JJAW.png
+${CMAKE_SOURCE_DIR}/assets/models/ENMY/JJAW_blend.png
+${CMAKE_SOURCE_DIR}/assets/models/ENMY/MEDR.png
+${CMAKE_SOURCE_DIR}/assets/models/ENMY/MNUS.png
+${CMAKE_SOURCE_DIR}/assets/models/ENMY/MNUS_blend.png
+${CMAKE_SOURCE_DIR}/assets/models/ENMY/PENG.png
+${CMAKE_SOURCE_DIR}/assets/models/ENMY/PENG_blend.png
+${CMAKE_SOURCE_DIR}/assets/models/ENMY/PNTY.png
+${CMAKE_SOURCE_DIR}/assets/models/ENMY/PNTY_blend.png
+${CMAKE_SOURCE_DIR}/assets/models/ENMY/POPH.png
+${CMAKE_SOURCE_DIR}/assets/models/ENMY/POPH_blend.png
+${CMAKE_SOURCE_DIR}/assets/models/ENMY/POSS.png
+${CMAKE_SOURCE_DIR}/assets/models/ENMY/POSS_blend.png
+${CMAKE_SOURCE_DIR}/assets/models/ENMY/PTER.png
+${CMAKE_SOURCE_DIR}/assets/models/ENMY/PTER_blend.png
+${CMAKE_SOURCE_DIR}/assets/models/ENMY/PYRE.png
+${CMAKE_SOURCE_DIR}/assets/models/ENMY/PYRE_blend.png
+${CMAKE_SOURCE_DIR}/assets/models/ENMY/RBUZ.png
+${CMAKE_SOURCE_DIR}/assets/models/ENMY/RBUZ_blend.png
+${CMAKE_SOURCE_DIR}/assets/models/ENMY/ROBO3.png
+${CMAKE_SOURCE_DIR}/assets/models/ENMY/ROBO3_blend.png
+${CMAKE_SOURCE_DIR}/assets/models/ENMY/RSNP.png
+${CMAKE_SOURCE_DIR}/assets/models/ENMY/SBOB.png
+${CMAKE_SOURCE_DIR}/assets/models/ENMY/SBOB_blend.png
+${CMAKE_SOURCE_DIR}/assets/models/ENMY/SFOT.png
+${CMAKE_SOURCE_DIR}/assets/models/ENMY/SHRP.png
+${CMAKE_SOURCE_DIR}/assets/models/ENMY/SHRP_blend.png
+${CMAKE_SOURCE_DIR}/assets/models/ENMY/SKIM.png
+${CMAKE_SOURCE_DIR}/assets/models/ENMY/SKIM_blend.png
+${CMAKE_SOURCE_DIR}/assets/models/ENMY/SNLR.png
+${CMAKE_SOURCE_DIR}/assets/models/ENMY/SNLR_blend.png
+${CMAKE_SOURCE_DIR}/assets/models/ENMY/SPOS.png
+${CMAKE_SOURCE_DIR}/assets/models/ENMY/SPOS_blend.png
+${CMAKE_SOURCE_DIR}/assets/models/ENMY/SPSH.png
+${CMAKE_SOURCE_DIR}/assets/models/ENMY/SPSH_blend.png
+${CMAKE_SOURCE_DIR}/assets/models/ENMY/SSHL.png
+${CMAKE_SOURCE_DIR}/assets/models/ENMY/SSHL_blend.png
+${CMAKE_SOURCE_DIR}/assets/models/ENMY/TRET.png
+${CMAKE_SOURCE_DIR}/assets/models/ENMY/TURR.png
+${CMAKE_SOURCE_DIR}/assets/models/ENMY/TURR_blend.png
+${CMAKE_SOURCE_DIR}/assets/models/ENMY/UNID.png
+${CMAKE_SOURCE_DIR}/assets/models/ENMY/UNID_blend.png
+${CMAKE_SOURCE_DIR}/assets/models/ENMY/VLTR.png
+${CMAKE_SOURCE_DIR}/assets/models/ENMY/VLTR_blend.png
+${CMAKE_SOURCE_DIR}/assets/models/ENMY/ARCH.md3
+${CMAKE_SOURCE_DIR}/assets/models/ENMY/BGOM.md3
+${CMAKE_SOURCE_DIR}/assets/models/ENMY/BMNE.md3
+${CMAKE_SOURCE_DIR}/assets/models/ENMY/BRKN.md3
+${CMAKE_SOURCE_DIR}/assets/models/ENMY/BUMB.md3
+${CMAKE_SOURCE_DIR}/assets/models/ENMY/BUZZ.md3
+${CMAKE_SOURCE_DIR}/assets/models/ENMY/CACO.md3
+${CMAKE_SOURCE_DIR}/assets/models/ENMY/CANA.md3
+${CMAKE_SOURCE_DIR}/assets/models/ENMY/CBBS.md3
+${CMAKE_SOURCE_DIR}/assets/models/ENMY/CBFS.md3
+${CMAKE_SOURCE_DIR}/assets/models/ENMY/CCOM.md3
+${CMAKE_SOURCE_DIR}/assets/models/ENMY/CR2B.md3
+${CMAKE_SOURCE_DIR}/assets/models/ENMY/CRAB.md3
+${CMAKE_SOURCE_DIR}/assets/models/ENMY/CSTA.md3
+${CMAKE_SOURCE_DIR}/assets/models/ENMY/DETN.md3
+${CMAKE_SOURCE_DIR}/assets/models/ENMY/DRAB.md3
+${CMAKE_SOURCE_DIR}/assets/models/ENMY/DRIL.md3
+${CMAKE_SOURCE_DIR}/assets/models/ENMY/ESHI.md3
+${CMAKE_SOURCE_DIR}/assets/models/ENMY/FAKE.md3
+${CMAKE_SOURCE_DIR}/assets/models/ENMY/FISH.md3
+${CMAKE_SOURCE_DIR}/assets/models/ENMY/FLSH.md3
+${CMAKE_SOURCE_DIR}/assets/models/ENMY/GOOM.md3
+${CMAKE_SOURCE_DIR}/assets/models/ENMY/GSNH.md3
+${CMAKE_SOURCE_DIR}/assets/models/ENMY/GSNL.md3
+${CMAKE_SOURCE_DIR}/assets/models/ENMY/GSNP.md3
+${CMAKE_SOURCE_DIR}/assets/models/ENMY/HBAT.md3
+${CMAKE_SOURCE_DIR}/assets/models/ENMY/HIVE.md3
+${CMAKE_SOURCE_DIR}/assets/models/ENMY/JETB.md3
+${CMAKE_SOURCE_DIR}/assets/models/ENMY/JETG.md3
+${CMAKE_SOURCE_DIR}/assets/models/ENMY/JJAW.md3
+${CMAKE_SOURCE_DIR}/assets/models/ENMY/MEDR.md3
+${CMAKE_SOURCE_DIR}/assets/models/ENMY/MNUS.md3
+${CMAKE_SOURCE_DIR}/assets/models/ENMY/PENG.md3
+${CMAKE_SOURCE_DIR}/assets/models/ENMY/PNTY.md3
+${CMAKE_SOURCE_DIR}/assets/models/ENMY/POPH.md3
+${CMAKE_SOURCE_DIR}/assets/models/ENMY/POSS.md3
+${CMAKE_SOURCE_DIR}/assets/models/ENMY/PTER.md3
+${CMAKE_SOURCE_DIR}/assets/models/ENMY/PYRE.md3
+${CMAKE_SOURCE_DIR}/assets/models/ENMY/RBUZ.md3
+${CMAKE_SOURCE_DIR}/assets/models/ENMY/ROBO3.md3
+${CMAKE_SOURCE_DIR}/assets/models/ENMY/RSNP.md3
+${CMAKE_SOURCE_DIR}/assets/models/ENMY/SBOB.md3
+${CMAKE_SOURCE_DIR}/assets/models/ENMY/SFOT.md3
+${CMAKE_SOURCE_DIR}/assets/models/ENMY/SHRP.md3
+${CMAKE_SOURCE_DIR}/assets/models/ENMY/SKIM.md3
+${CMAKE_SOURCE_DIR}/assets/models/ENMY/SNLR.md3
+${CMAKE_SOURCE_DIR}/assets/models/ENMY/SPOS.md3
+${CMAKE_SOURCE_DIR}/assets/models/ENMY/SPSH.md3
+${CMAKE_SOURCE_DIR}/assets/models/ENMY/SSHL.md3
+${CMAKE_SOURCE_DIR}/assets/models/ENMY/TRET.md3
+${CMAKE_SOURCE_DIR}/assets/models/ENMY/TURR.md3
+${CMAKE_SOURCE_DIR}/assets/models/ENMY/UNID.md3
+${CMAKE_SOURCE_DIR}/assets/models/ENMY/VLTR.md3
+	)
+
+	set(ModelsOBJE
+${CMAKE_SOURCE_DIR}/assets/models/OBJE/ARMB.md3
+${CMAKE_SOURCE_DIR}/assets/models/OBJE/ARMF.md3
+${CMAKE_SOURCE_DIR}/assets/models/OBJE/BAR2.md3
+${CMAKE_SOURCE_DIR}/assets/models/OBJE/BARR.md3
+${CMAKE_SOURCE_DIR}/assets/models/OBJE/BGAR.md3
+${CMAKE_SOURCE_DIR}/assets/models/OBJE/BHSP.md3
+${CMAKE_SOURCE_DIR}/assets/models/OBJE/BLNK.md3
+${CMAKE_SOURCE_DIR}/assets/models/OBJE/BLON.md3
+${CMAKE_SOURCE_DIR}/assets/models/OBJE/BMCE.md3
+${CMAKE_SOURCE_DIR}/assets/models/OBJE/BMSL.md3
+${CMAKE_SOURCE_DIR}/assets/models/OBJE/BOMB.md3
+${CMAKE_SOURCE_DIR}/assets/models/OBJE/BSPB.md3
+${CMAKE_SOURCE_DIR}/assets/models/OBJE/BSPR.md3
+${CMAKE_SOURCE_DIR}/assets/models/OBJE/BSTR.md3
+${CMAKE_SOURCE_DIR}/assets/models/OBJE/BSTY.md3
+${CMAKE_SOURCE_DIR}/assets/models/OBJE/BUBS.md3
+${CMAKE_SOURCE_DIR}/assets/models/OBJE/BUMP.md3
+${CMAKE_SOURCE_DIR}/assets/models/OBJE/CEMG.md3
+${CMAKE_SOURCE_DIR}/assets/models/OBJE/COIN.md3
+${CMAKE_SOURCE_DIR}/assets/models/OBJE/CORK.md3
+${CMAKE_SOURCE_DIR}/assets/models/OBJE/CRID.md3
+${CMAKE_SOURCE_DIR}/assets/models/OBJE/CSPR.md3
+${CMAKE_SOURCE_DIR}/assets/models/OBJE/EGGL.md3
+${CMAKE_SOURCE_DIR}/assets/models/OBJE/EMBM.md3
+${CMAKE_SOURCE_DIR}/assets/models/OBJE/ESTA.md3
+${CMAKE_SOURCE_DIR}/assets/models/OBJE/FFWR.md3
+${CMAKE_SOURCE_DIR}/assets/models/OBJE/FIRE.md3
+${CMAKE_SOURCE_DIR}/assets/models/OBJE/FLMS.md3
+${CMAKE_SOURCE_DIR}/assets/models/OBJE/FMCE.md3
+${CMAKE_SOURCE_DIR}/assets/models/OBJE/FUFO.md3
+${CMAKE_SOURCE_DIR}/assets/models/OBJE/GARG.md3
+${CMAKE_SOURCE_DIR}/assets/models/OBJE/GSHL.md3
+${CMAKE_SOURCE_DIR}/assets/models/OBJE/HMCE.md3
+${CMAKE_SOURCE_DIR}/assets/models/OBJE/IDYA.md3
+${CMAKE_SOURCE_DIR}/assets/models/OBJE/LVLA.md3
+${CMAKE_SOURCE_DIR}/assets/models/OBJE/MAGN.md3
+${CMAKE_SOURCE_DIR}/assets/models/OBJE/MCRT.md3
+${CMAKE_SOURCE_DIR}/assets/models/OBJE/MSTV.md3
+${CMAKE_SOURCE_DIR}/assets/models/OBJE/MSVT.md3
+${CMAKE_SOURCE_DIR}/assets/models/OBJE/NBMP.md3
+${CMAKE_SOURCE_DIR}/assets/models/OBJE/NDRN.md3
+${CMAKE_SOURCE_DIR}/assets/models/OBJE/OSHD.md3
+${CMAKE_SOURCE_DIR}/assets/models/OBJE/OSPR.md3
+${CMAKE_SOURCE_DIR}/assets/models/OBJE/PBOM.md3
+${CMAKE_SOURCE_DIR}/assets/models/OBJE/PITY.md3
+${CMAKE_SOURCE_DIR}/assets/models/OBJE/PUMI.md3
+${CMAKE_SOURCE_DIR}/assets/models/OBJE/RHSP.md3
+${CMAKE_SOURCE_DIR}/assets/models/OBJE/RING.md3
+${CMAKE_SOURCE_DIR}/assets/models/OBJE/RSPB.md3
+${CMAKE_SOURCE_DIR}/assets/models/OBJE/RSPR.md3
+${CMAKE_SOURCE_DIR}/assets/models/OBJE/SHED.md3
+${CMAKE_SOURCE_DIR}/assets/models/OBJE/SHRD.md3
+${CMAKE_SOURCE_DIR}/assets/models/OBJE/SIGN.md3
+${CMAKE_SOURCE_DIR}/assets/models/OBJE/SMCE.md3
+${CMAKE_SOURCE_DIR}/assets/models/OBJE/SOBB.md3
+${CMAKE_SOURCE_DIR}/assets/models/OBJE/SORB.md3
+${CMAKE_SOURCE_DIR}/assets/models/OBJE/SPHR.md3
+${CMAKE_SOURCE_DIR}/assets/models/OBJE/SPRB.md3
+${CMAKE_SOURCE_DIR}/assets/models/OBJE/SPRG.md3
+${CMAKE_SOURCE_DIR}/assets/models/OBJE/SPRR.md3
+${CMAKE_SOURCE_DIR}/assets/models/OBJE/SPRY.md3
+${CMAKE_SOURCE_DIR}/assets/models/OBJE/STPT.md3
+${CMAKE_SOURCE_DIR}/assets/models/OBJE/TBRI.md3
+${CMAKE_SOURCE_DIR}/assets/models/OBJE/THNS.md3
+${CMAKE_SOURCE_DIR}/assets/models/OBJE/THOK.md3
+${CMAKE_SOURCE_DIR}/assets/models/OBJE/TOKE.md3
+${CMAKE_SOURCE_DIR}/assets/models/OBJE/TRRI.md3
+${CMAKE_SOURCE_DIR}/assets/models/OBJE/TV1K.md3
+${CMAKE_SOURCE_DIR}/assets/models/OBJE/TV1P.md3
+${CMAKE_SOURCE_DIR}/assets/models/OBJE/TV1U.md3
+${CMAKE_SOURCE_DIR}/assets/models/OBJE/TVAR.md3
+${CMAKE_SOURCE_DIR}/assets/models/OBJE/TVAT.md3
+${CMAKE_SOURCE_DIR}/assets/models/OBJE/TVBB.md3
+${CMAKE_SOURCE_DIR}/assets/models/OBJE/TVEG.md3
+${CMAKE_SOURCE_DIR}/assets/models/OBJE/TVEL.md3
+${CMAKE_SOURCE_DIR}/assets/models/OBJE/TVFL.md3
+${CMAKE_SOURCE_DIR}/assets/models/OBJE/TVFO.md3
+${CMAKE_SOURCE_DIR}/assets/models/OBJE/TVGV.md3
+${CMAKE_SOURCE_DIR}/assets/models/OBJE/TVIV.md3
+${CMAKE_SOURCE_DIR}/assets/models/OBJE/TVMX.md3
+${CMAKE_SOURCE_DIR}/assets/models/OBJE/TVMY.md3
+${CMAKE_SOURCE_DIR}/assets/models/OBJE/TVPI.md3
+${CMAKE_SOURCE_DIR}/assets/models/OBJE/TVRC.md3
+${CMAKE_SOURCE_DIR}/assets/models/OBJE/TVRI.md3
+${CMAKE_SOURCE_DIR}/assets/models/OBJE/TVSS.md3
+${CMAKE_SOURCE_DIR}/assets/models/OBJE/TVTK.md3
+${CMAKE_SOURCE_DIR}/assets/models/OBJE/TVTU.md3
+${CMAKE_SOURCE_DIR}/assets/models/OBJE/TVWW.md3
+${CMAKE_SOURCE_DIR}/assets/models/OBJE/TVZP.md3
+${CMAKE_SOURCE_DIR}/assets/models/OBJE/USPK.md3
+${CMAKE_SOURCE_DIR}/assets/models/OBJE/VBRI.md3
+${CMAKE_SOURCE_DIR}/assets/models/OBJE/VRRI.md3
+${CMAKE_SOURCE_DIR}/assets/models/OBJE/WSPK.md3
+${CMAKE_SOURCE_DIR}/assets/models/OBJE/XLTV.md3
+${CMAKE_SOURCE_DIR}/assets/models/OBJE/YHSP.md3
+${CMAKE_SOURCE_DIR}/assets/models/OBJE/YSPB.md3
+${CMAKE_SOURCE_DIR}/assets/models/OBJE/YSPR.md3
+${CMAKE_SOURCE_DIR}/assets/models/OBJE/ARMB.png
+${CMAKE_SOURCE_DIR}/assets/models/OBJE/ARMF.png
+${CMAKE_SOURCE_DIR}/assets/models/OBJE/BAR2.png
+${CMAKE_SOURCE_DIR}/assets/models/OBJE/BARR.png
+${CMAKE_SOURCE_DIR}/assets/models/OBJE/BGAR.png
+${CMAKE_SOURCE_DIR}/assets/models/OBJE/BHSP.png
+${CMAKE_SOURCE_DIR}/assets/models/OBJE/BLON.png
+${CMAKE_SOURCE_DIR}/assets/models/OBJE/BLON_blend.png
+${CMAKE_SOURCE_DIR}/assets/models/OBJE/BMCE.png
+${CMAKE_SOURCE_DIR}/assets/models/OBJE/BMSL.png
+${CMAKE_SOURCE_DIR}/assets/models/OBJE/BOMB.png
+${CMAKE_SOURCE_DIR}/assets/models/OBJE/BSPB.png
+${CMAKE_SOURCE_DIR}/assets/models/OBJE/BSPR.png
+${CMAKE_SOURCE_DIR}/assets/models/OBJE/BSTR.png
+${CMAKE_SOURCE_DIR}/assets/models/OBJE/BSTY.png
+${CMAKE_SOURCE_DIR}/assets/models/OBJE/BUBS.png
+${CMAKE_SOURCE_DIR}/assets/models/OBJE/CEMG.png
+${CMAKE_SOURCE_DIR}/assets/models/OBJE/COIN.png
+${CMAKE_SOURCE_DIR}/assets/models/OBJE/CORK.png
+${CMAKE_SOURCE_DIR}/assets/models/OBJE/CRID.png
+${CMAKE_SOURCE_DIR}/assets/models/OBJE/CSPR.png
+${CMAKE_SOURCE_DIR}/assets/models/OBJE/EGGL.png
+${CMAKE_SOURCE_DIR}/assets/models/OBJE/ESTA.png
+${CMAKE_SOURCE_DIR}/assets/models/OBJE/FFWR.png
+${CMAKE_SOURCE_DIR}/assets/models/OBJE/FLMS.png
+${CMAKE_SOURCE_DIR}/assets/models/OBJE/FMCE.png
+${CMAKE_SOURCE_DIR}/assets/models/OBJE/FUFO.png
+${CMAKE_SOURCE_DIR}/assets/models/OBJE/GARG.png
+${CMAKE_SOURCE_DIR}/assets/models/OBJE/GSHL.png
+${CMAKE_SOURCE_DIR}/assets/models/OBJE/HMCE.png
+${CMAKE_SOURCE_DIR}/assets/models/OBJE/MCRT.png
+${CMAKE_SOURCE_DIR}/assets/models/OBJE/MSTV.png
+${CMAKE_SOURCE_DIR}/assets/models/OBJE/MSVT.png
+${CMAKE_SOURCE_DIR}/assets/models/OBJE/NBMP.png
+${CMAKE_SOURCE_DIR}/assets/models/OBJE/OSHD.png
+${CMAKE_SOURCE_DIR}/assets/models/OBJE/OSPR.png
+${CMAKE_SOURCE_DIR}/assets/models/OBJE/PITY.png
+${CMAKE_SOURCE_DIR}/assets/models/OBJE/PITY_blend.png
+${CMAKE_SOURCE_DIR}/assets/models/OBJE/PUMI.png
+${CMAKE_SOURCE_DIR}/assets/models/OBJE/PUMI_blend.png
+${CMAKE_SOURCE_DIR}/assets/models/OBJE/RHSP.png
+${CMAKE_SOURCE_DIR}/assets/models/OBJE/RING.png
+${CMAKE_SOURCE_DIR}/assets/models/OBJE/RING_blend.png
+${CMAKE_SOURCE_DIR}/assets/models/OBJE/RSPB.png
+${CMAKE_SOURCE_DIR}/assets/models/OBJE/RSPR.png
+${CMAKE_SOURCE_DIR}/assets/models/OBJE/SHRD.png
+${CMAKE_SOURCE_DIR}/assets/models/OBJE/SIGN.png
+${CMAKE_SOURCE_DIR}/assets/models/OBJE/SIGN_blend.png
+${CMAKE_SOURCE_DIR}/assets/models/OBJE/SMCE.png
+${CMAKE_SOURCE_DIR}/assets/models/OBJE/SPHR.png
+${CMAKE_SOURCE_DIR}/assets/models/OBJE/SPRB.png
+${CMAKE_SOURCE_DIR}/assets/models/OBJE/SPRG.png
+${CMAKE_SOURCE_DIR}/assets/models/OBJE/SPRR.png
+${CMAKE_SOURCE_DIR}/assets/models/OBJE/SPRY.png
+${CMAKE_SOURCE_DIR}/assets/models/OBJE/STPT.png
+${CMAKE_SOURCE_DIR}/assets/models/OBJE/TBRI.png
+${CMAKE_SOURCE_DIR}/assets/models/OBJE/THNS.png
+${CMAKE_SOURCE_DIR}/assets/models/OBJE/TOKE.png
+${CMAKE_SOURCE_DIR}/assets/models/OBJE/TRRI.png
+${CMAKE_SOURCE_DIR}/assets/models/OBJE/TV1K.png
+${CMAKE_SOURCE_DIR}/assets/models/OBJE/TV1P.png
+${CMAKE_SOURCE_DIR}/assets/models/OBJE/TV1U.png
+${CMAKE_SOURCE_DIR}/assets/models/OBJE/TVAR.png
+${CMAKE_SOURCE_DIR}/assets/models/OBJE/TVAT.png
+${CMAKE_SOURCE_DIR}/assets/models/OBJE/TVBB.png
+${CMAKE_SOURCE_DIR}/assets/models/OBJE/TVEG.png
+${CMAKE_SOURCE_DIR}/assets/models/OBJE/TVEL.png
+${CMAKE_SOURCE_DIR}/assets/models/OBJE/TVFL.png
+${CMAKE_SOURCE_DIR}/assets/models/OBJE/TVFO.png
+${CMAKE_SOURCE_DIR}/assets/models/OBJE/TVGV.png
+${CMAKE_SOURCE_DIR}/assets/models/OBJE/TVIV.png
+${CMAKE_SOURCE_DIR}/assets/models/OBJE/TVMX.png
+${CMAKE_SOURCE_DIR}/assets/models/OBJE/TVMY.png
+${CMAKE_SOURCE_DIR}/assets/models/OBJE/TVPI.png
+${CMAKE_SOURCE_DIR}/assets/models/OBJE/TVRC.png
+${CMAKE_SOURCE_DIR}/assets/models/OBJE/TVRI.png
+${CMAKE_SOURCE_DIR}/assets/models/OBJE/TVSS.png
+${CMAKE_SOURCE_DIR}/assets/models/OBJE/TVTK.png
+${CMAKE_SOURCE_DIR}/assets/models/OBJE/TVTU.png
+${CMAKE_SOURCE_DIR}/assets/models/OBJE/TVWW.png
+${CMAKE_SOURCE_DIR}/assets/models/OBJE/TVZP.png
+${CMAKE_SOURCE_DIR}/assets/models/OBJE/USPK.png
+${CMAKE_SOURCE_DIR}/assets/models/OBJE/VBRI.png
+${CMAKE_SOURCE_DIR}/assets/models/OBJE/VRRI.png
+${CMAKE_SOURCE_DIR}/assets/models/OBJE/WPSK.png
+${CMAKE_SOURCE_DIR}/assets/models/OBJE/WSPK.png
+${CMAKE_SOURCE_DIR}/assets/models/OBJE/XLTV.png
+${CMAKE_SOURCE_DIR}/assets/models/OBJE/YHSP.png
+${CMAKE_SOURCE_DIR}/assets/models/OBJE/YSPB.png
+${CMAKE_SOURCE_DIR}/assets/models/OBJE/YSPR.png
+	)
+
+	set(ModelsPLAY
+${CMAKE_SOURCE_DIR}/assets/models/PLAY/AMY.png
+${CMAKE_SOURCE_DIR}/assets/models/PLAY/AMY_blend.png
+${CMAKE_SOURCE_DIR}/assets/models/PLAY/FANG.png
+${CMAKE_SOURCE_DIR}/assets/models/PLAY/FANG_blend.png
+${CMAKE_SOURCE_DIR}/assets/models/PLAY/KNUCKLES.png
+${CMAKE_SOURCE_DIR}/assets/models/PLAY/KNUCKLES_blend.png
+${CMAKE_SOURCE_DIR}/assets/models/PLAY/METAL_SONIC.png
+${CMAKE_SOURCE_DIR}/assets/models/PLAY/METAL_SONIC_blend.png
+${CMAKE_SOURCE_DIR}/assets/models/PLAY/SONIC.png
+${CMAKE_SOURCE_DIR}/assets/models/PLAY/SONIC_blend.png
+${CMAKE_SOURCE_DIR}/assets/models/PLAY/TAILS.png
+${CMAKE_SOURCE_DIR}/assets/models/PLAY/TAILS_blend.png
+${CMAKE_SOURCE_DIR}/assets/models/PLAY/AMY.md3
+${CMAKE_SOURCE_DIR}/assets/models/PLAY/FANG.md3
+${CMAKE_SOURCE_DIR}/assets/models/PLAY/KNUCKLES.md3
+${CMAKE_SOURCE_DIR}/assets/models/PLAY/METAL_SONIC.md3
+${CMAKE_SOURCE_DIR}/assets/models/PLAY/SONIC.md3
+${CMAKE_SOURCE_DIR}/assets/models/PLAY/TAILS.md3
+	)
+
+	source_group("models\\BOSS" "${ModelsBOSS}") 
+	source_group("models\\ENMY" "${ModelsENMY}") 
+	source_group("models\\OBGE" "${ModelsOBGE}") 
+	source_group("models\\PLAY" "${ModelsPLAY}") 
 
 	set(DepFiles
 		../assets/models.dat
@@ -155,7 +540,10 @@ if (CMAKE_SYSTEM_NAME STREQUAL "WindowsStore")
 		${ResourceFiles}
 		${AssetFiles}
 		${DepFiles}
-#		${Models}
+		${ModelsBOSS}
+		${ModelsENMY}
+		${ModelsOBGE}
+		${ModelsPLAY}
 		uwp/system_uwp.cpp
 		uwp/gamepad_uwp.cpp
 		${CMAKE_BINARY_DIR}/SDL-uwp-gl/src/main/winrt/SDL_winrt_main_NonXAML.cpp)
@@ -172,11 +560,20 @@ if (CMAKE_SYSTEM_NAME STREQUAL "WindowsStore")
 	set_property(SOURCE ${DepFiles} PROPERTY VS_DEPLOYMENT_CONTENT 1)
 	set_property(SOURCE ${DepFiles} PROPERTY VS_DEPLOYMENT_LOCATION ".")
 
-#	set_property(SOURCE ${Models} PROPERTY VS_DEPLOYMENT_CONTENT 1)
-#	set_property(SOURCE ${Models} PROPERTY VS_DEPLOYMENT_LOCATION "models")
+	set_property(SOURCE ${ModelsBOSS} PROPERTY VS_DEPLOYMENT_CONTENT 1)
+	set_property(SOURCE ${ModelsBOSS} PROPERTY VS_DEPLOYMENT_LOCATION "models/BOSS")
+
+	set_property(SOURCE ${ModelsENMY} PROPERTY VS_DEPLOYMENT_CONTENT 1)
+	set_property(SOURCE ${ModelsENMY} PROPERTY VS_DEPLOYMENT_LOCATION "models/ENMY")
+
+	set_property(SOURCE ${ModelsOBGE} PROPERTY VS_DEPLOYMENT_CONTENT 1)
+	set_property(SOURCE ${ModelsOBGE} PROPERTY VS_DEPLOYMENT_LOCATION "models/OBGE")
+
+	set_property(SOURCE ${ModelsPLAY} PROPERTY VS_DEPLOYMENT_CONTENT 1)
+	set_property(SOURCE ${ModelsPLAY} PROPERTY VS_DEPLOYMENT_LOCATION "models/PLAY")
 	
 	set_target_properties(SRB2SDL2 PROPERTIES RESOURCE 
-		"${ResourceFiles} ${DepFiles} ${AssetFiles}")
+		"${ResourceFiles} ${DepFiles} ${AssetFiles} ${ModelsBOSS} ${ModelsENMY} ${ModelsOBGE} ${ModelsPLAY}")
 	
 	target_link_options(SRB2SDL2 PRIVATE 
 		/nodefaultlib:vccorlib$<$<CONFIG:Debug>:d>
